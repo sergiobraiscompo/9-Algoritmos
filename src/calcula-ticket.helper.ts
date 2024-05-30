@@ -60,12 +60,13 @@ interface ResultadoLineaTicket {
     precioConIva: number;
 };
 
-const calculaPrecioProducto = (precioProducto: number): number => {
+const calculaPreciosProducto = (precioProducto: number): number[] => {
     
 }
 
-const calculaPrecioProducto = (precioProducto: string, arrayProductos: LineaTicket[]): number => {
+const calculaCantidadProducto = (precioProducto: string, arrayProductos: LineaTicket[]): number => {
     
+    return cantidad;
 }
 
 
