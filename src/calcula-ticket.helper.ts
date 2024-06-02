@@ -64,15 +64,7 @@ const calculaPreciosProducto = (precioProducto: number): number[] => {
     
 }
 
-const calculaCantidadProducto = (precioProducto: string, arrayProductos: LineaTicket[]): number => {
-    
-    return cantidad;
-}
+const creaLineaTicket = (producto: Producto, lineaTicket: LineaTicket): LineaTicket => {
 
-
-
-const creaLineaTicket = (producto: Producto): LineaTicket => {
-    const precio = producto.precio;
-
-    return [ producto: producto.nombre, cantidad: obtenCantidadProductos(producto.nombre)];
+  return [ producto.nombre, cantidad: ];
 }
