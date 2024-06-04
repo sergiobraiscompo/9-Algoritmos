@@ -18,8 +18,10 @@ interface ResultadoTotalTicket {
 };
 
 const calculaTicket = (lineasTicket: LineaTicket[]) => {
-    if (!lineasTicket) { 
-        throw new Error("Se ha producido un error con el producto"); 
-    }
+  if (!lineasTicket) { 
+    throw new Error("Se ha producido un error con el producto"); 
+  }
+
+    lineasTicket.reduce(calcula);
 };
 

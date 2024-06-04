@@ -1,19 +1,37 @@
-describe('validaNIF', () => {
+import { calculaPorcentajeIva, devuelvePrecioConIva } from "./calcula-ticket.helper";
+
+describe('calculaPorcentajeIva', () => {
     // Arrange
     it.each([
-        ["12345678", "Z", true],
-        ["73536276", "D", true],
-        ["72184153", "X", true],
-        ["36218255", "V", true],
-        ["21137848", "C", true],
-        ["12345678", "A", false],
-        ["98765432", "A", false],
-        ["33333333", "C", false],
-    ])("El NIF %s%s es válido: %s", (numero, letra, resultadoEsperado) => {
-            // Act
-            const resultado = validaNIF(numero, letra);
+        ["general", 0.21],
+        ["reducido", 0.1],
+        ["superreducidoA", 0.05],
+        ["superreducidoB", 0.04],
+        ["superreducidoC", 0],
+        ["sinIva", 0],
+    ])("Si el IVA es de tipo %s el IVA ha de ser de un %s", (tipoIva, resultadoEsperado) => {
+        // Act
+        const resultado = calculaPorcentajeIva(tipoIva);
 
-            // Assert
-            expect(resultado).toBe(resultadoEsperado);
+        // Assert
+        expect(resultado).toBe(resultadoEsperado);
+    });
+});
+
+describe('devuelvePrecioConIva', () => {
+    // Arrange
+    it.each([
+        [10, "general", 12.1],
+        [10, "reducido", 11],
+        [10, "superreducidoA", 10.5],
+        [10, "superreducidoB", 10.4],
+        [10, "superreducidoC", 10],
+        [10, "sinIva", 10],
+    ])("Si el IVA es de tipo %s el IVA ha de ser de un %s", (precio, tipoIva, resultadoEsperado) => {
+        // Act
+        const resultado = devuelvePrecioConIva(precio, tipoIva);
+
+        // Assert
+        expect(resultado).toBe(resultadoEsperado);
     });
 });

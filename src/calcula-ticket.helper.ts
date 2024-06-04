@@ -60,11 +60,50 @@ interface ResultadoLineaTicket {
     precioConIva: number;
 };
 
-const calculaPreciosProducto = (precioProducto: number): number[] => {
-    
+export const calculaPorcentajeIva = (tipoIva: TipoIva): number => {
+  if (!tipoIva) { 
+    throw new Error("Se ha producido un error con el producto"); 
+  }
+
+  let porcentajeIva = 0;
+
+  switch (tipoIva) {
+    case "general": {
+      porcentajeIva = 0.21;
+      break;
+    }
+
+    case "reducido": {
+      porcentajeIva = 0.1;
+      break;
+    }
+
+    case "superreducidoA": {
+      porcentajeIva = 0.05;
+      break;
+    }
+
+    case "superreducidoB": {
+      porcentajeIva = 0.04;
+      break;
+    }
+
+    default: {
+      return porcentajeIva;
+    }
+  }
+
+  return porcentajeIva;
 }
 
-const creaLineaTicket = (producto: Producto, lineaTicket: LineaTicket): LineaTicket => {
+export const devuelvePrecioConIva = (precio: number, tipoIva: TipoIva): number => {
+  if (!precio && !tipoIva) { 
+    throw new Error("Se ha producido un error con el producto"); 
+  }
 
-  return [ producto.nombre, cantidad: ];
+  const iva = calculaPorcentajeIva(tipoIva);
+
+  const valorIva = precio * iva;
+
+  return precio + valorIva;
 }
