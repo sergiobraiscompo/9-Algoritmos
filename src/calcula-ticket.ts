@@ -1,27 +1,21 @@
 import "./style.css";
-
-interface ResultadoTotalTicket {
-    totalSinIva: number;
-    totalConIva: number;
-    totalIva: number;
-};
-  
-  interface TotalPorTipoIva {
-    tipoIva: TipoIVA;
-    cuantia : number;
-};
-  
-  interface TicketFinal {
-    lineas: ResultadoLineaTicket[];
-    total: ResultadoTotalTicket;
-    desgloseIva: TotalPorTipoIva[];
-};
+import { LineaTicket, Producto } from "./ticket-constantes";
 
 const calculaTicket = (lineasTicket: LineaTicket[]) => {
   if (!lineasTicket) { 
     throw new Error("Se ha producido un error con el producto"); 
   }
 
-    lineasTicket.reduce(calcula);
+  lineasTicket.reduce();
 };
 
+export const creaLineaTicket = (producto: Producto, cantidad: number): LineaTicket => {
+  if (!producto || !cantidad || cantidad <= 0) { 
+    throw new Error("Se ha producido un error con el producto"); 
+  }
+
+  return {
+    producto: producto,
+    cantidad: cantidad
+  }
+}

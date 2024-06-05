@@ -1,64 +1,4 @@
-type TipoIva =
-  | "general"
-  | "reducido"
-  | "superreducidoA"
-  | "superreducidoB"
-  | "superreducidoC"
-  | "sinIva";
-
-const productos: LineaTicket[] = [
-    {
-      producto: {
-        nombre: "Legumbres",
-        precio: 2,
-        tipoIva: "general",
-      },
-      cantidad: 2,
-    },
-    {
-      producto: {
-        nombre: "Perfume",
-        precio: 20,
-        tipoIva: "general",
-      },
-      cantidad: 3,
-    },
-    {
-      producto: {
-        nombre: "Leche",
-        precio: 1,
-        tipoIva: "superreducidoC",
-      },
-      cantidad: 6,
-    },
-    {
-      producto: {
-        nombre: "Lasaña",
-        precio: 5,
-        tipoIva: "superreducidoA",
-      },
-      cantidad: 1,
-    },
-];
-
-interface Producto {
-  nombre: string;
-  precio: number;
-  tipoIva: TipoIva;
-}
-
-interface LineaTicket {
-  producto: Producto;
-  cantidad: number;
-}
-
-interface ResultadoLineaTicket {
-    nombre: string;
-    cantidad: number;
-    precionSinIva: number;
-    tipoIva: TipoIva;
-    precioConIva: number;
-};
+import { TipoIva } from "./ticket-constantes";
 
 export const calculaPorcentajeIva = (tipoIva: TipoIva): number => {
   if (!tipoIva) { 
@@ -96,14 +36,15 @@ export const calculaPorcentajeIva = (tipoIva: TipoIva): number => {
   return porcentajeIva;
 }
 
-export const devuelvePrecioConIva = (precio: number, tipoIva: TipoIva): number => {
-  if (!precio && !tipoIva) { 
+export const devuelvePrecioConIva = (precio: number, tipoIva: TipoIva): string => {
+  if (!precio || !tipoIva || precio <= 0) { 
     throw new Error("Se ha producido un error con el producto"); 
   }
 
   const iva = calculaPorcentajeIva(tipoIva);
 
   const valorIva = precio * iva;
+  const total = precio + valorIva;
 
-  return precio + valorIva;
+  return total.toFixed(2);
 }
