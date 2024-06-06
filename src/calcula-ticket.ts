@@ -15,7 +15,8 @@ export const creaLineaTicket = (producto: Producto, cantidad: number): LineaTick
   }
 
   return {
-    producto: producto,
-    cantidad: cantidad
+    producto,
+    cantidad
   }
 }
+
