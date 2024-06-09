@@ -1,5 +1,5 @@
-import { devuelvePrecioConIva } from "./calcula-ticket.helper";
 import "./style.css";
+import { devuelvePrecioConIva } from "./calcula-ticket.helper";
 import { LineaTicket, Producto, ResultadoLineaTicket } from "./ticket-constantes";
 
 export const calculaTicket = (lineasTicket: LineaTicket[]) => {
@@ -8,7 +8,18 @@ export const calculaTicket = (lineasTicket: LineaTicket[]) => {
   }
 
   const totalSinIva = 0;
+  const totalConIva = 0;
+  const totalIva = 0;
+
   const calcularTotalSinIva = lineasTicket.reduce((acc, linea) => acc + linea.producto.precio, totalSinIva);
+  const calcularTotalConIva = lineasTicket.reduce((acc, linea) => acc + linea.producto.precio, totalConIva);
+  const calcularIva = lineasTicket.reduce((acc, linea) => acc + linea.producto.precio, totalIva);
+
+  return {
+    totalSinIva: calcularTotalSinIva,
+    totalConIva: calcularTotalConIva,
+    totalIva: calcularIva,
+  };
 };
 
 // export const creaLineaTicket = (producto: Producto, cantidad: number): LineaTicket => {
