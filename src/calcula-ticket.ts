@@ -7,21 +7,29 @@ export const calculaTicket = (lineasTicket: LineaTicket[]) => {
     throw new Error("Se ha producido un error con el producto"); 
   }
 
-  const totalSinIva = 0;
-  const totalConIva = lineasTicket.map((linea): number => {
-    return parseInt(devuelvePrecioConIva(linea.producto));
-  })
+  const arrayResultadosLinea = [];
 
+  const devuelveArrayResultadosLinea = lineasTicket.map((lineaTicket) => {
+
+    if (linea) { 
+      throw new Error("Se ha producido un error con el producto"); 
+    }
+
+    return creaResultadoLineaTicket(lineaTicket);
+  });
+
+  const totalSinIva = 0;
+  const totalConIva = 0;
   const totalIva = 0;
 
-  const calcularTotalSinIva = lineasTicket.reduce((acc, linea) => acc + linea.producto.precio, totalSinIva);
-  const calcularTotalConIva = lineasTicket.reduce((acc, linea) => acc + linea.producto.precio, totalConIva);
-  const calcularIva = lineasTicket.reduce((acc, linea) => acc + linea.producto.precio, totalIva);
+  const calcularTotalConIva = arrayResultadosLinea.reduce((acc, precio) => acc + precio, totalConIva);
+  const calcularTotalIva = arrayResultadosLinea.reduce((acc, precio) => acc + precio, totalIva);
+  const calcularTotalSinIva = arrayResultadosLinea.reduce((acc, linea) => acc + linea.producto.precio, totalSinIva);
 
   return {
     totalSinIva: calcularTotalSinIva,
+    totalIva: calcularTotalIva,
     totalConIva: calcularTotalConIva,
-    totalIva: calcularIva,
   };
 };
 
@@ -36,8 +44,8 @@ export const calculaTicket = (lineasTicket: LineaTicket[]) => {
 //   }
 // }
 
-export const creaResultadoLineaTicket = (producto: Producto, cantidad: number): ResultadoLineaTicket => {
-  if (!producto || !cantidad || cantidad <= 0) { 
+export const creaResultadoLineaTicket = (lineaTicket: LineaTicket): ResultadoLineaTicket => {
+  if (!lineaTicket.producto || !lineaTicket.cantidad || lineaTicket.cantidad <= 0) {
     throw new Error("Se ha producido un error con el producto"); 
   }
 
@@ -46,6 +54,6 @@ export const creaResultadoLineaTicket = (producto: Producto, cantidad: number): 
     cantidad: cantidad,
     precionSinIva: producto.precio,
     tipoIva: producto.tipoIva,
-    precioConIva: parseFloat(devuelvePrecioConIva(producto.precio, producto.tipoIva)),
+    precioConIva: parseFloat(devuelvePrecioConIva(producto)),
   };
 }

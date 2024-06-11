@@ -42,10 +42,16 @@ describe('calculaTicket', () => {
     ]
 
     const resultadoEsperado = [
-        { nombre: "Legumbres", cantidad: 2, precionSinIva: 2, tipoIva: "general", precioConIva: 2.42 },
-        { nombre: "Perfume", cantidad: 3, precionSinIva: 20, tipoIva: "general", precioConIva: 24.2 },
-        { nombre: "Leche", cantidad: 6, precionSinIva: 1, tipoIva: "superreducidoC", precioConIva: 1 },
-        { nombre: "Lasaña", cantidad: 1, precionSinIva: 5, tipoIva: "superreducidoA", precioConIva: 5.25 }
+        totalSinIva: 28,
+        totalIva: ,
+        totalesPorTipoIva = {
+        [general: 12.10.toFixed(2)],
+        [reducido: 11.00.toFixed(2)],
+        [superreducidoA: 10.50.toFixed(2)],
+        [superreducidoB: 10.40.toFixed(2)],
+        [superreducidoC: 10.00.toFixed(2)],
+        [sinIva: 10.00.toFixed(2)]}
+        totalConIva: 54,
     ]
         // Act
         const resultado = calculaTicket(lineasTicket);

@@ -42,6 +42,7 @@ describe('devuelvePrecioConIva', () => {
         // assert
         expect(resultado).toThrowError("Se ha producido un error con el producto");
     });
+    
     // Arrange
     it.each([
         [10, "general", 12.10.toFixed(2)],
@@ -50,9 +51,9 @@ describe('devuelvePrecioConIva', () => {
         [10, "superreducidoB", 10.40.toFixed(2)],
         [10, "superreducidoC", 10.00.toFixed(2)],
         [10, "sinIva", 10.00.toFixed(2)],
-    ])("Si el precio es de %s, ccon tipo IVA de %s, el coste totalha de ser de %s", (precio, tipoIva, resultadoEsperado) => {
+    ])("Si el precio es de %s, con tipo IVA de %s, el coste total ha de ser de %s", (producto, resultadoEsperado) => {
         // Act
-        const resultado = devuelvePrecioConIva(precio, tipoIva);
+        const resultado = devuelvePrecioConIva(producto);
 
         // Assert
         expect(resultado).toEqual(resultadoEsperado);
