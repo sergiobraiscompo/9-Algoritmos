@@ -8,7 +8,10 @@ export const calculaTicket = (lineasTicket: LineaTicket[]) => {
   }
 
   const totalSinIva = 0;
-  const totalConIva = 0;
+  const totalConIva = lineasTicket.map((linea): number => {
+    return parseInt(devuelvePrecioConIva(linea.producto));
+  })
+
   const totalIva = 0;
 
   const calcularTotalSinIva = lineasTicket.reduce((acc, linea) => acc + linea.producto.precio, totalSinIva);

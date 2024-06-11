@@ -1,4 +1,4 @@
-import { TipoIva } from "./ticket-constantes";
+import { Producto, TipoIva } from "./ticket-constantes";
 
 export const calculaPorcentajeIva = (tipoIva: TipoIva): number => {
   if (!tipoIva) { 
@@ -36,7 +36,10 @@ export const calculaPorcentajeIva = (tipoIva: TipoIva): number => {
   return porcentajeIva;
 }
 
-export const devuelvePrecioConIva = (precio: number, tipoIva: TipoIva): string => {
+export const devuelvePrecioConIva = (producto: Producto): string => {
+  const precio = producto.precio;
+  const tipoIva = producto.tipoIva;
+
   if (!precio || !tipoIva || precio <= 0) { 
     throw new Error("Se ha producido un error con el producto"); 
   }
