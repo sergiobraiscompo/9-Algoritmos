@@ -32,7 +32,36 @@ describe('creaResultadoLineaTicket', () => {
     })
 });
 
-describe('calculaTicket', () => {    
+// describe('calculaTicket', () => {    
+//     it("Obtiene un array de productos con cantidad y devuelve el total del ticket sin IVA, la línea completa del ticket ha de ser %s", () => {
+//     const lineasTicket = [
+//         { producto: { nombre: "Legumbres", precio: 2, tipoIva: "general"}, cantidad: 2 },
+//         { producto: { nombre: "Perfume", precio: 20, tipoIva: "general"}, cantidad: 3 },
+//         { producto: { nombre: "Leche", precio: 1, tipoIva: "superreducidoC" }, cantidad: 6 },
+//         { producto: { nombre: "Lasaña", precio: 5, tipoIva: "superreducidoA" }, cantidad: 1 },
+//     ]
+
+//     const resultadoEsperado = [
+//         totalSinIva: 28,
+//         totalIva: ,
+//         totalesPorTipoIva = {
+//         [general: 12.10.toFixed(2)],
+//         [reducido: 11.00.toFixed(2)],
+//         [superreducidoA: 10.50.toFixed(2)],
+//         [superreducidoB: 10.40.toFixed(2)],
+//         [superreducidoC: 10.00.toFixed(2)],
+//         [sinIva: 10.00.toFixed(2)]}
+//         totalConIva: 54,
+//     ]
+//         // Act
+//         const resultado = calculaTicket(lineasTicket);
+
+//         // Assert
+//         expect(resultado).toEqual(resultadoEsperado);
+//     })
+// });
+
+describe('calculaResultadoTotalTicket', () => {    
     it("Obtiene un array de productos con cantidad y devuelve el total del ticket sin IVA, la línea completa del ticket ha de ser %s", () => {
     const lineasTicket = [
         { producto: { nombre: "Legumbres", precio: 2, tipoIva: "general"}, cantidad: 2 },
@@ -44,17 +73,10 @@ describe('calculaTicket', () => {
     const resultadoEsperado = [
         totalSinIva: 28,
         totalIva: ,
-        totalesPorTipoIva = {
-        [general: 12.10.toFixed(2)],
-        [reducido: 11.00.toFixed(2)],
-        [superreducidoA: 10.50.toFixed(2)],
-        [superreducidoB: 10.40.toFixed(2)],
-        [superreducidoC: 10.00.toFixed(2)],
-        [sinIva: 10.00.toFixed(2)]}
-        totalConIva: 54,
+        totalesPorTipoIva = 
     ]
         // Act
-        const resultado = calculaTicket(lineasTicket);
+        const resultado = calculaResultadoTotalTicket(lineasTicket);
 
         // Assert
         expect(resultado).toEqual(resultadoEsperado);

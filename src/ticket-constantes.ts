@@ -13,9 +13,9 @@ export interface Producto {
 };
 
 export interface ResultadoTotalTicket {
-    totalSinIva: number;
-    totalConIva: number;
-    totalIva: number;
+  totalSinIva: number;
+  totalConIva: number;
+  totalIva: number;
 };
     
 export interface TotalPorTipoIva {
