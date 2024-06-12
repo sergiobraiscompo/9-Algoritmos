@@ -44,10 +44,37 @@ export const devuelvePrecioConIva = (producto: Producto): string => {
     throw new Error("Se ha producido un error con el producto"); 
   }
 
-  const iva = calculaPorcentajeIva(tipoIva);
-
-  const valorIva = precio * iva;
+  const valorIva = parseFloat(devuelveValorIva(precio, tipoIva));
   const total = precio + valorIva;
 
   return total.toFixed(2);
+}
+
+export const devuelveValorIva = (precio: number, tipoIva: TipoIva): string => {
+
+  if (!precio || !tipoIva || precio <= 0) { 
+    throw new Error("Se ha producido un error con el producto"); 
+  }
+
+  const iva = calculaPorcentajeIva(tipoIva);
+
+  const valorIva = precio * iva;
+
+  return valorIva.toFixed(2);
+}
+
+// Solo usadas para el resultadoFinalTicket
+export const calcularTotalSinIva = (preciosSinIva: number[]): number => {
+  const totalSinIva = preciosSinIva.reduce((acc, precioSinIva) => acc + precioSinIva)
+  return totalSinIva;
+}
+  
+export const calcularTotalConIva = (preciosConIva: number[]): number => {
+  const totalConIva = preciosConIva.reduce((acc, precioConIva) => acc + precioConIva)
+  return totalConIva;
+}
+  
+export const calcularTotalIva = (ivasPrecios: number[]): number => {
+  const totalIva = ivasPrecios.reduce((acc, totalIva) => acc + totalIva)
+  return totalIva;
 }

@@ -1,4 +1,5 @@
-import { calculaTicket, creaResultadoLineaTicket } from "./calcula-ticket";
+import { calculaResultadoTotalTicket, creaResultadoLineaTicket } from "./calcula-ticket";
+import { ResultadoLineaTicket, ResultadoTotalTicket } from "./ticket-constantes";
 
 // describe('creaLineaTicket', () => {  
 //     it.each([
@@ -32,51 +33,23 @@ describe('creaResultadoLineaTicket', () => {
     })
 });
 
-// describe('calculaTicket', () => {    
-//     it("Obtiene un array de productos con cantidad y devuelve el total del ticket sin IVA, la línea completa del ticket ha de ser %s", () => {
-//     const lineasTicket = [
-//         { producto: { nombre: "Legumbres", precio: 2, tipoIva: "general"}, cantidad: 2 },
-//         { producto: { nombre: "Perfume", precio: 20, tipoIva: "general"}, cantidad: 3 },
-//         { producto: { nombre: "Leche", precio: 1, tipoIva: "superreducidoC" }, cantidad: 6 },
-//         { producto: { nombre: "Lasaña", precio: 5, tipoIva: "superreducidoA" }, cantidad: 1 },
-//     ]
-
-//     const resultadoEsperado = [
-//         totalSinIva: 28,
-//         totalIva: ,
-//         totalesPorTipoIva = {
-//         [general: 12.10.toFixed(2)],
-//         [reducido: 11.00.toFixed(2)],
-//         [superreducidoA: 10.50.toFixed(2)],
-//         [superreducidoB: 10.40.toFixed(2)],
-//         [superreducidoC: 10.00.toFixed(2)],
-//         [sinIva: 10.00.toFixed(2)]}
-//         totalConIva: 54,
-//     ]
-//         // Act
-//         const resultado = calculaTicket(lineasTicket);
-
-//         // Assert
-//         expect(resultado).toEqual(resultadoEsperado);
-//     })
-// });
-
 describe('calculaResultadoTotalTicket', () => {    
-    it("Obtiene un array de productos con cantidad y devuelve el total del ticket sin IVA, la línea completa del ticket ha de ser %s", () => {
-    const lineasTicket = [
-        { producto: { nombre: "Legumbres", precio: 2, tipoIva: "general"}, cantidad: 2 },
-        { producto: { nombre: "Perfume", precio: 20, tipoIva: "general"}, cantidad: 3 },
-        { producto: { nombre: "Leche", precio: 1, tipoIva: "superreducidoC" }, cantidad: 6 },
-        { producto: { nombre: "Lasaña", precio: 5, tipoIva: "superreducidoA" }, cantidad: 1 },
-    ]
+    it("Obtiene un array de productos con cantidad y devuelve el total del ticket sin IVA, la línea completa del ticket ha de ser ", () => {
+        const resultadoLineasTicket: ResultadoLineaTicket[] = [
+            {nombre: "Legumbres", cantidad: 2, precionSinIva: 2, tipoIva: "general", precioConIva: 2.42},
+            {nombre: "Perfume", cantidad: 3, precionSinIva: 20, tipoIva: "general", precioConIva: 24.2},
+            {nombre: "Leche", cantidad: 6, precionSinIva: 1, tipoIva: "superreducidoC", precioConIva: 1},
+            {nombre: "Lasaña", cantidad: 1, precionSinIva: 5, tipoIva: "superreducidoA", precioConIva: 5.25},
+        ]
 
-    const resultadoEsperado = [
-        totalSinIva: 28,
-        totalIva: ,
-        totalesPorTipoIva = 
-    ]
+        const resultadoEsperado: ResultadoTotalTicket = {
+            totalSinIva: 75,
+            totalConIva: 88.69,
+            totalIva: 13.69,
+        }
+
         // Act
-        const resultado = calculaResultadoTotalTicket(lineasTicket);
+        const resultado = calculaResultadoTotalTicket(resultadoLineasTicket);
 
         // Assert
         expect(resultado).toEqual(resultadoEsperado);
