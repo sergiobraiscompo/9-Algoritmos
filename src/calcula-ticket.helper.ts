@@ -78,3 +78,4 @@ export const calcularTotalIva = (ivasPrecios: number[]): number => {
   const totalIva = ivasPrecios.reduce((acc, totalIva) => acc + totalIva)
   return totalIva;
 }
+

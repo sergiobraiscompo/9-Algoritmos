@@ -34,7 +34,7 @@ export interface LineaTicket {
   cantidad: number;
 }
 
-const productos: LineaTicket[] = [
+export const productos: LineaTicket[] = [
   {
     producto: {
       nombre: "Legumbres",

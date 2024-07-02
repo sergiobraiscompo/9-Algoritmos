@@ -1,6 +1,6 @@
 import "./style.css";
 import { calculaPorcentajeIva, devuelvePrecioConIva , calcularTotalSinIva, calcularTotalConIva, calcularTotalIva, devuelveValorIva} from "./calcula-ticket.helper";
-import { LineaTicket, Producto, ResultadoLineaTicket, ResultadoTotalTicket } from "./ticket-constantes";
+import { LineaTicket, Producto, ResultadoLineaTicket, ResultadoTotalTicket, productos } from "./ticket-constantes";
 
 export const calculaTicket = (lineasTicket: LineaTicket[]) => {
   if (!lineasTicket) { 
@@ -41,8 +41,8 @@ export const calculaResultadoTotalTicket = (resultadoLineasTicket: ResultadoLine
       throw new Error("Se ha producido un error con el producto"); 
     }
 
-    const valorIva = ;
-    const totalIvaProcuto = valorIva.toFixed(2);
+    const valorIva = 0;
+    const totalIvaProducto = valorIva.toFixed(2);
 
     const precioSinIva = resultadoLineaTicket.cantidad * resultadoLineaTicket.precionSinIva;
     const precioConIva = resultadoLineaTicket.cantidad * resultadoLineaTicket.precioConIva;
@@ -68,9 +68,9 @@ export const calculaResultadoTotalTicket = (resultadoLineasTicket: ResultadoLine
 export const creaResultadoLineaTicket = (lineaTicket: LineaTicket): ResultadoLineaTicket => {
   const producto = lineaTicket.producto;
   const cantidad = lineaTicket.cantidad;
-
+  
   if (!producto || !cantidad || cantidad <= 0) {
-    throw new Error("Se ha producido un error con el producto"); 
+    throw new Error(`Se ha producido un error con el producto, ${producto}, ${cantidad}`); 
   }
 
   return {
