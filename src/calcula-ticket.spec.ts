@@ -17,7 +17,7 @@ describe('creaResultadoLineaTicket', () => {
     })
 });
 
-describe('calculaResultadoTotalTicket', () => {    
+describe('calculaTicket', () => {    
     it("Obtiene un array de productos con cantidad y devuelve el total del ticket sin IVA, la línea completa del ticket ha de ser ", () => {
         const resultadoLineasTicket: ResultadoLineaTicket[] = [
             {nombre: "Legumbres", cantidad: 2, precionSinIva: 2, tipoIva: "general", precioConIva: 2.42},
