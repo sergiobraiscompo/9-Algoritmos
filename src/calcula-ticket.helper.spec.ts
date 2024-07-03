@@ -1,4 +1,5 @@
 import { calculaPorcentajeIva, devuelvePrecioConIva } from "./calcula-ticket.helper";
+import { Producto } from "./ticket-constantes";
 
 describe('calculaPorcentajeIva', () => {
     // Arrange
@@ -21,11 +22,10 @@ describe('calculaPorcentajeIva', () => {
 describe('devuelvePrecioConIva', () => {
     it("Debería devolver un error ya que el precio es menor que 0€", () => {
         //arrange
-        const precio  = -15;
-        const tipoIva = "sinIva";
+        const producto: Producto = { nombre: "Legumbres", precio: -15, tipoIva: "general"};
 
         // act
-        const resultado = () => devuelvePrecioConIva(precio, tipoIva);
+        const resultado = () => devuelvePrecioConIva(producto);
 
         // assert
         expect(resultado).toThrowError("Se ha producido un error con el producto");
@@ -33,11 +33,10 @@ describe('devuelvePrecioConIva', () => {
 
     it("Debería devolver un error ya que el precio es de 0€", () => {
         //arrange
-        const precio  = 0;
-        const tipoIva = "sinIva";
+        const producto: Producto = { nombre: "Legumbres", precio: 0, tipoIva: "general"};;
 
         // act
-        const resultado = () => devuelvePrecioConIva(precio, tipoIva);
+        const resultado = () => devuelvePrecioConIva(producto);
 
         // assert
         expect(resultado).toThrowError("Se ha producido un error con el producto");
@@ -45,12 +44,12 @@ describe('devuelvePrecioConIva', () => {
     
     // Arrange
     it.each([
-        [10, "general", 12.10.toFixed(2)],
-        [10, "reducido", 11.00.toFixed(2)],
-        [10, "superreducidoA", 10.50.toFixed(2)],
-        [10, "superreducidoB", 10.40.toFixed(2)],
-        [10, "superreducidoC", 10.00.toFixed(2)],
-        [10, "sinIva", 10.00.toFixed(2)],
+        [{ nombre: "Legumbres", precio: 10, tipoIva: "general"}, 12.10.toFixed(2)],
+        [{ nombre: "Legumbres", precio: 10, tipoIva: "reducido"}, 11.00.toFixed(2)],
+        [{ nombre: "Legumbres", precio: 10, tipoIva: "superreducidoA"}, 10.50.toFixed(2)],
+        [{ nombre: "Legumbres", precio: 10, tipoIva: "superreducidoB"}, 10.40.toFixed(2)],
+        [{ nombre: "Legumbres", precio: 10, tipoIva: "superreducidoC"}, 10.00.toFixed(2)],
+        [{ nombre: "Legumbres", precio: 10, tipoIva: "sinIva"}, 10.00.toFixed(2)]
     ])("Si el precio es de %s, con tipo IVA de %s, el coste total ha de ser de %s", (producto, resultadoEsperado) => {
         // Act
         const resultado = devuelvePrecioConIva(producto);

@@ -47,7 +47,7 @@ export const devuelvePrecioConIva = (producto: Producto): string => {
   const valorIva = parseFloat(devuelveValorIva(precio, tipoIva));
   const total = precio + valorIva;
 
-  return total.toFixed(2);
+  return total.toString();
 }
 
 export const devuelveValorIva = (precio: number, tipoIva: TipoIva): string => {
@@ -78,4 +78,3 @@ export const calcularTotalIva = (ivasPrecios: number[]): number => {
   const totalIva = ivasPrecios.reduce((acc, totalIva) => acc + totalIva)
   return totalIva;
 }
-

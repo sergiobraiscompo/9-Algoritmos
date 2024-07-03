@@ -2,29 +2,56 @@ import "./style.css";
 import { calculaPorcentajeIva, devuelvePrecioConIva , calcularTotalSinIva, calcularTotalConIva, calcularTotalIva, devuelveValorIva} from "./calcula-ticket.helper";
 import { LineaTicket, Producto, ResultadoLineaTicket, ResultadoTotalTicket, productos } from "./ticket-constantes";
 
-export const calculaTicket = (lineasTicket: LineaTicket[]) => {
+export const calculaTicket = (lineasTicket: ResultadoLineaTicket[]): ResultadoTotalTicket => {
   if (!lineasTicket) { 
     throw new Error("Se ha producido un error con el producto"); 
   }
 
-  const devuelveArrayResultadosLinea = lineasTicket.map((lineaTicket) => {
-    if (!lineaTicket) {
-      throw new Error("Se ha producido un error con el producto"); 
-      }
-      
-    return creaResultadoLineaTicket(lineaTicket);
-    });
+  const arrayPreciosSinIva: number[] = [];
+  const arrayPreciosConIva: number[] = [];
+  const arrayIvas: number[] = [];
 
-    const resultadosLineasTicket = [];
-    const totalDesglosadoPorTipoIva = [];
-    const totalTicket = 0;
-      
-    return {
-      lineas: resultadosLineasTicket,
-      total: calculaResultadoTotalTicket,
-      desgloseIva: totalDesglosadoPorTipoIva,
-    };
+  // Crea un array con los precios totales de los productos     
+  lineasTicket.map((lineaTicket) => {
+    if (!lineaTicket) {
+      throw new Error("Se ha producido un error con el producto");
+    }
+  
+    const cantidad = lineaTicket.cantidad;
+
+    const precioSinIva = cantidad * lineaTicket.precionSinIva;
+    const precioConIva = cantidad * lineaTicket.precioConIva;
+    const ivaProducto = cantidad * parseFloat(devuelveValorIva(lineaTicket.precionSinIva, lineaTicket.tipoIva));
+
+    arrayPreciosSinIva.push(precioSinIva);
+    arrayPreciosConIva.push(precioConIva);
+    arrayIvas.push(ivaProducto);
+  });
+
+
+  return {
+    totalSinIva: calcularTotalSinIva(arrayPreciosSinIva),
+    totalConIva: calcularTotalConIva(arrayPreciosConIva),
+    totalIva: calcularTotalIva(arrayIvas)
+  };
 };
+
+export const creaResultadoLineaTicket = (lineaTicket: LineaTicket): ResultadoLineaTicket => {
+  const producto = lineaTicket.producto;
+  const cantidad = lineaTicket.cantidad;
+  
+  if (!producto || !cantidad || cantidad <= 0) {
+    throw new Error("Se ha producido un error con el producto"); 
+  }
+
+  return {
+    nombre: producto.nombre,
+    cantidad: cantidad,
+    precionSinIva: producto.precio,
+    tipoIva: producto.tipoIva,
+    precioConIva: parseFloat(devuelvePrecioConIva(producto)),
+  };
+}
 
 export const calculaResultadoTotalTicket = (resultadoLineasTicket: ResultadoLineaTicket[]): ResultadoTotalTicket => {
   if (!resultadoLineasTicket) {
@@ -35,7 +62,6 @@ export const calculaResultadoTotalTicket = (resultadoLineasTicket: ResultadoLine
   const preciosSinIva: number[] = [];
   const ivasPrecios: number[] = [];
 
-  // Añade los elementos a las arrays previamente creadas, TODO comprobar que funciona correctamente
   resultadoLineasTicket.map ((resultadoLineaTicket) => {
     if (!resultadoLineaTicket) {
       throw new Error("Se ha producido un error con el producto"); 
@@ -48,7 +74,6 @@ export const calculaResultadoTotalTicket = (resultadoLineasTicket: ResultadoLine
     const precioConIva = resultadoLineaTicket.cantidad * resultadoLineaTicket.precioConIva;
     const ivaProducto = resultadoLineaTicket.cantidad * parseFloat(devuelveValorIva(resultadoLineaTicket.precionSinIva, resultadoLineaTicket.tipoIva));
   
-
     preciosConIva.push(precioConIva);
     preciosSinIva.push(precioSinIva);
     ivasPrecios.push(ivaProducto);
@@ -63,21 +88,4 @@ export const calculaResultadoTotalTicket = (resultadoLineasTicket: ResultadoLine
     totalConIva: totalPreciosConIva,
     totalIva: totalIvasProducto,
   }
-}
-
-export const creaResultadoLineaTicket = (lineaTicket: LineaTicket): ResultadoLineaTicket => {
-  const producto = lineaTicket.producto;
-  const cantidad = lineaTicket.cantidad;
-  
-  if (!producto || !cantidad || cantidad <= 0) {
-    throw new Error(`Se ha producido un error con el producto, ${producto}, ${cantidad}`); 
-  }
-
-  return {
-    nombre: producto.nombre,
-    cantidad: cantidad,
-    precionSinIva: producto.precio,
-    tipoIva: producto.tipoIva,
-    precioConIva: parseFloat(devuelvePrecioConIva(producto)),
-  };
 }
