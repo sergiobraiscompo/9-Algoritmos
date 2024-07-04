@@ -1,38 +1,27 @@
 import "./style.css";
-import { calculaPorcentajeIva, devuelvePrecioConIva , calcularTotalSinIva, calcularTotalConIva, calcularTotalIva, devuelveValorIva} from "./calcula-ticket.helper";
-import { LineaTicket, Producto, ResultadoLineaTicket, ResultadoTotalTicket, productos } from "./ticket-constantes";
+import { calculaPorcentajeIva, devuelvePrecioConIva , calcularTotalSinIva, calcularTotalConIva, calcularTotalIva, devuelveValorIva, devuelveIvasDesglosados} from "./calcula-ticket.helper";
+import { LineaTicket, Producto, ResultadoLineaTicket, ResultadoTotalTicket, TicketFinal, TotalPorTipoIva, productos } from "./ticket-constantes";
 
-export const calculaTicket = (lineasTicket: ResultadoLineaTicket[]): ResultadoTotalTicket => {
+export const calculaTicket = (lineasTicket: LineaTicket[]): TicketFinal => {
   if (!lineasTicket) { 
     throw new Error("Se ha producido un error con el producto"); 
   }
 
-  const arrayPreciosSinIva: number[] = [];
-  const arrayPreciosConIva: number[] = [];
-  const arrayIvas: number[] = [];
+  const lineasTicketCompletas: ResultadoLineaTicket[] = [];
 
-  // Crea un array con los precios totales de los productos     
-  lineasTicket.map((lineaTicket) => {
-    if (!lineaTicket) {
-      throw new Error("Se ha producido un error con el producto");
-    }
-  
-    const cantidad = lineaTicket.cantidad;
-
-    const precioSinIva = cantidad * lineaTicket.precionSinIva;
-    const precioConIva = cantidad * lineaTicket.precioConIva;
-    const ivaProducto = cantidad * parseFloat(devuelveValorIva(lineaTicket.precionSinIva, lineaTicket.tipoIva));
-
-    arrayPreciosSinIva.push(precioSinIva);
-    arrayPreciosConIva.push(precioConIva);
-    arrayIvas.push(ivaProducto);
+  const creaLineasTicketCompletas = lineasTicket.map((lineaTicket) => {
+    const lineaTicketCompleta: ResultadoLineaTicket = creaResultadoLineaTicket(lineaTicket);
+    lineasTicketCompletas.push(lineaTicketCompleta);
   });
 
+  const totalTicket: ResultadoTotalTicket = calculaResultadoTotalTicket(lineasTicketCompletas);
+
+  const ivasDesglosados: TotalPorTipoIva[] = devuelveIvasDesglosados(lineasTicketCompletas);
 
   return {
-    totalSinIva: calcularTotalSinIva(arrayPreciosSinIva),
-    totalConIva: calcularTotalConIva(arrayPreciosConIva),
-    totalIva: calcularTotalIva(arrayIvas)
+    lineas: lineasTicketCompletas,
+    total: totalTicket,
+    desgloseIva: ivasDesglosados
   };
 };
 
@@ -70,9 +59,15 @@ export const calculaResultadoTotalTicket = (resultadoLineasTicket: ResultadoLine
     const valorIva = 0;
     const totalIvaProducto = valorIva.toFixed(2);
 
-    const precioSinIva = resultadoLineaTicket.cantidad * resultadoLineaTicket.precionSinIva;
-    const precioConIva = resultadoLineaTicket.cantidad * resultadoLineaTicket.precioConIva;
-    const ivaProducto = resultadoLineaTicket.cantidad * parseFloat(devuelveValorIva(resultadoLineaTicket.precionSinIva, resultadoLineaTicket.tipoIva));
+// TODO: usar array methods con la correspondiente función auxiliar
+// calcularTotalSinIva
+const precioSinIva = calcularTotalSinIva();
+
+// calcularTotalIva
+const precioConIva = resultadoLineaTicket.cantidad * resultadoLineaTicket.precioConIva;
+
+// calcularTotalConIva
+const ivaProducto = resultadoLineaTicket.cantidad * parseFloat(devuelveValorIva(resultadoLineaTicket.precionSinIva, resultadoLineaTicket.tipoIva));
   
     preciosConIva.push(precioConIva);
     preciosSinIva.push(precioSinIva);

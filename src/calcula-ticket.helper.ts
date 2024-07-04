@@ -1,4 +1,4 @@
-import { Producto, TipoIva } from "./ticket-constantes";
+import { LineaTicket, Producto, ResultadoLineaTicket, TipoIva, TotalPorTipoIva } from "./ticket-constantes";
 
 export const calculaPorcentajeIva = (tipoIva: TipoIva): number => {
   if (!tipoIva) { 
@@ -77,4 +77,39 @@ export const calcularTotalConIva = (preciosConIva: number[]): number => {
 export const calcularTotalIva = (ivasPrecios: number[]): number => {
   const totalIva = ivasPrecios.reduce((acc, totalIva) => acc + totalIva)
   return totalIva;
+}
+
+export const devuelveIvasDesglosados = (lineasTicketCompletas: ResultadoLineaTicket[]): TotalPorTipoIva[] => {
+  if (!lineasTicket) {
+    throw new Error("Ha ocurrido un problema con las líneas recibidas.");
+  }
+
+  const tiposIva: TipoIva[] = ["general", "reducido", "superreducidoA", "superreducidoB", "superreducidoC", "sinIva"];
+
+  // Recorre el array de ivas y devuelve el total por cada tipo de iva
+  const resultado: TotalPorTipoIva[] = tiposIva.reduce((acumulador: TotalPorTipoIva[], tipoIva: TipoIva) => {
+    // Variables necesarias para el desglose
+    const lineasConProductoTipoIva = lineasTicketCompletas.filter((lineaTicketCompleta) => lineaTicketCompleta.tipoIva === tipoIva);
+    const valoresIva = lineasConProductoTipoIva.map((lineaConProductoTipoIva) => {
+      lineasTicketCompletas.map((lineaTicketCompleta)=> {
+        const precio = lineaTicketCompleta.precionSinIva;
+        const unidades = lineaTicketCompleta.cantidad;
+        const tipoIva = lineaTicketCompleta.tipoIva;
+        
+        return unidades * parseFloat(devuelveValorIva(precio, tipoIva));
+      })
+    });
+    
+    const cantidad: number = valoresIva.reduce((acc, valor) => acc + valor, total)
+    const total = 0;
+
+    // Devuelve un array TotalPorTipoIva[]
+    return lineasConProductoTipoIva.length > 0
+        ? [...acumulador, { tipoIva : tipoIva, cuantia: cantidad }]
+        : acumulador;
+    },
+  []
+  );
+
+  return resultado;
 }
