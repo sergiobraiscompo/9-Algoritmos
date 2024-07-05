@@ -7,19 +7,17 @@ export const calculaTicket = (lineasTicket: LineaTicket[]): TicketFinal => {
     throw new Error("Se ha producido un error con el producto"); 
   }
 
-  const lineasTicketCompletas: ResultadoLineaTicket[] = [];
-
   const creaLineasTicketCompletas = lineasTicket.map((lineaTicket) => {
     const lineaTicketCompleta: ResultadoLineaTicket = creaResultadoLineaTicket(lineaTicket);
-    lineasTicketCompletas.push(lineaTicketCompleta);
+    return lineaTicketCompleta;
   });
 
-  const totalTicket: ResultadoTotalTicket = calculaResultadoTotalTicket(lineasTicketCompletas);
+  const totalTicket: ResultadoTotalTicket = calculaResultadoTotalTicket(creaLineasTicketCompletas);
 
-  const ivasDesglosados: TotalPorTipoIva[] = devuelveIvasDesglosados(lineasTicketCompletas);
+  const ivasDesglosados: TotalPorTipoIva[] = devuelveIvasDesglosados(creaLineasTicketCompletas);
 
   return {
-    lineas: lineasTicketCompletas,
+    lineas: creaLineasTicketCompletas,
     total: totalTicket,
     desgloseIva: ivasDesglosados
   };
@@ -28,8 +26,8 @@ export const calculaTicket = (lineasTicket: LineaTicket[]): TicketFinal => {
 export const creaResultadoLineaTicket = (lineaTicket: LineaTicket): ResultadoLineaTicket => {
   const producto = lineaTicket.producto;
   const cantidad = lineaTicket.cantidad;
-  
-  if (!producto || !cantidad || cantidad <= 0) {
+
+  if (!producto || !cantidad || cantidad <= 0 ) {
     throw new Error("Se ha producido un error con el producto"); 
   }
 

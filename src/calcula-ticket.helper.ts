@@ -79,37 +79,42 @@ export const calcularTotalIva = (ivasPrecios: number[]): number => {
   return totalIva;
 }
 
-export const devuelveIvasDesglosados = (lineasTicketCompletas: ResultadoLineaTicket[]): TotalPorTipoIva[] => {
-  if (!lineasTicketCompletas) {
+export const devuelveIvasDesglosados = (resultadoLineasTicketCompletas: ResultadoLineaTicket[]): TotalPorTipoIva[] => {
+  if (!resultadoLineasTicketCompletas) {
     throw new Error("Ha ocurrido un problema con las líneas recibidas.");
   }
 
   const tiposIva: TipoIva[] = ["general", "reducido", "superreducidoA", "superreducidoB", "superreducidoC", "sinIva"];
 
   // Recorre el array de ivas y devuelve el total por cada tipo de iva
-  const resultado: TotalPorTipoIva[] = tiposIva.reduce((acumulador: TotalPorTipoIva[], tipoIva: TipoIva) => {
-    // Variables necesarias para el desglose
-    const lineasConProductoTipoIva = lineasTicketCompletas.filter((lineaTicketCompleta) => lineaTicketCompleta.tipoIva === tipoIva);
-    const valoresIva = lineasConProductoTipoIva.map((lineaConProductoTipoIva) => {
-      lineasTicketCompletas.map((lineaTicketCompleta)=> {
-        const precio = lineaTicketCompleta.precioSinIva;
-        const unidades = lineaTicketCompleta.cantidad;
-        const tipoIva = lineaTicketCompleta.tipoIva;
-        
-        return unidades * parseFloat(devuelveValorIva(precio, tipoIva));
-      })
-    });
-    
-    const total = 0;
-    const cantidad: number = valoresIva.reduce((acc, valor) => acc + valor, total)
+  const resultado = (): TotalPorTipoIva => {
+    for (let tipoIva in tiposIva) {
+      console.log("Productos con el tipo de iva", tipoIva)
 
-    // Devuelve un array TotalPorTipoIva[]
-    return lineasConProductoTipoIva.length > 0
+      const valoresIva = resultadoLineasTicketCompletas.map((resultadoLineaTicketCompleta) => {
+        const precio = resultadoLineaTicketCompleta.precioSinIva;
+        const unidades = resultadoLineaTicketCompleta.cantidad;
+        const tipoIva = resultadoLineaTicketCompleta.tipoIva;
+        const precioTotal = unidades * parseFloat(devuelveValorIva(precio, tipoIva));
+        
+        return {tipoIva, precioTotal};
+      })
+    };
+    
+    // Variables necesarias para el desglose
+    const lineasConProductoTipoIva 0;
+    console.log(lineasConProductoTipoIva)
+
+      const total = 0;
+      const cantidad: number = 
+  
+      // Devuelve un array TotalPorTipoIva[]
+      return valoresIva.length > 0
         ? [...acumulador, { tipoIva : tipoIva, cuantia: cantidad }]
         : acumulador;
-    },
-  []
-  );
-
+      },
+    []
+  }
   return resultado;
 }
+
