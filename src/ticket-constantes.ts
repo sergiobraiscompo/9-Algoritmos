@@ -73,7 +73,7 @@ export const productos: LineaTicket[] = [
 export interface ResultadoLineaTicket {
   nombre: string;
   cantidad: number;
-  precionSinIva: number;
+  precioSinIva: number;
   tipoIva: TipoIva;
   precioConIva: number;
 };

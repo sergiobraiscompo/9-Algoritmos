@@ -47,7 +47,7 @@ export const devuelvePrecioConIva = (producto: Producto): string => {
   const valorIva = parseFloat(devuelveValorIva(precio, tipoIva));
   const total = precio + valorIva;
 
-  return total.toString();
+  return total.toFixed(2);
 }
 
 export const devuelveValorIva = (precio: number, tipoIva: TipoIva): string => {
@@ -80,7 +80,7 @@ export const calcularTotalIva = (ivasPrecios: number[]): number => {
 }
 
 export const devuelveIvasDesglosados = (lineasTicketCompletas: ResultadoLineaTicket[]): TotalPorTipoIva[] => {
-  if (!lineasTicket) {
+  if (!lineasTicketCompletas) {
     throw new Error("Ha ocurrido un problema con las líneas recibidas.");
   }
 
@@ -92,7 +92,7 @@ export const devuelveIvasDesglosados = (lineasTicketCompletas: ResultadoLineaTic
     const lineasConProductoTipoIva = lineasTicketCompletas.filter((lineaTicketCompleta) => lineaTicketCompleta.tipoIva === tipoIva);
     const valoresIva = lineasConProductoTipoIva.map((lineaConProductoTipoIva) => {
       lineasTicketCompletas.map((lineaTicketCompleta)=> {
-        const precio = lineaTicketCompleta.precionSinIva;
+        const precio = lineaTicketCompleta.precioSinIva;
         const unidades = lineaTicketCompleta.cantidad;
         const tipoIva = lineaTicketCompleta.tipoIva;
         
@@ -100,8 +100,8 @@ export const devuelveIvasDesglosados = (lineasTicketCompletas: ResultadoLineaTic
       })
     });
     
-    const cantidad: number = valoresIva.reduce((acc, valor) => acc + valor, total)
     const total = 0;
+    const cantidad: number = valoresIva.reduce((acc, valor) => acc + valor, total)
 
     // Devuelve un array TotalPorTipoIva[]
     return lineasConProductoTipoIva.length > 0

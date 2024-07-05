@@ -36,7 +36,7 @@ export const creaResultadoLineaTicket = (lineaTicket: LineaTicket): ResultadoLin
   return {
     nombre: producto.nombre,
     cantidad: cantidad,
-    precionSinIva: producto.precio,
+    precioSinIva: producto.precio,
     tipoIva: producto.tipoIva,
     precioConIva: parseFloat(devuelvePrecioConIva(producto)),
   };
@@ -47,8 +47,8 @@ export const calculaResultadoTotalTicket = (resultadoLineasTicket: ResultadoLine
     throw new Error("Se ha producido un error con el producto"); 
   }
 
-  const preciosConIva: number[] = [];
   const preciosSinIva: number[] = [];
+  const preciosConIva: number[] = [];
   const ivasPrecios: number[] = [];
 
   resultadoLineasTicket.map ((resultadoLineaTicket) => {
@@ -56,22 +56,15 @@ export const calculaResultadoTotalTicket = (resultadoLineasTicket: ResultadoLine
       throw new Error("Se ha producido un error con el producto"); 
     }
 
-    const valorIva = 0;
-    const totalIvaProducto = valorIva.toFixed(2);
-
-// TODO: usar array methods con la correspondiente función auxiliar
-// calcularTotalSinIva
-const precioSinIva = calcularTotalSinIva();
-
-// calcularTotalIva
-const precioConIva = resultadoLineaTicket.cantidad * resultadoLineaTicket.precioConIva;
-
-// calcularTotalConIva
-const ivaProducto = resultadoLineaTicket.cantidad * parseFloat(devuelveValorIva(resultadoLineaTicket.precionSinIva, resultadoLineaTicket.tipoIva));
-  
-    preciosConIva.push(precioConIva);
-    preciosSinIva.push(precioSinIva);
-    ivasPrecios.push(ivaProducto);
+    // TODO: usar array methods con la correspondiente función auxiliar
+    // calcularTotalSinIva
+    preciosSinIva.push(resultadoLineaTicket.precioSinIva);
+    
+    // calcularTotalConIva
+    preciosConIva.push(resultadoLineaTicket.precioSinIva);
+    
+    // calcularTotalIva
+    ivasPrecios.push(parseFloat(devuelveValorIva(resultadoLineaTicket.precioSinIva, resultadoLineaTicket.tipoIva)));
   });
 
   const totalPreciosSinIva: number = calcularTotalSinIva(preciosSinIva);
