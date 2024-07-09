@@ -1,5 +1,5 @@
 import { calculaPorcentajeIva, devuelveIvasDesglosados, devuelvePrecioConIva } from "./calcula-ticket.helper";
-import { LineaTicket, Producto, TotalPorTipoIva } from "./ticket-constantes";
+import { LineaTicket, Producto, ResultadoLineaTicket, TotalPorTipoIva } from "./ticket-constantes";
 
 describe('calculaPorcentajeIva', () => {
     // Arrange
@@ -84,17 +84,17 @@ describe('devuelveIvasDesglosados', () => {
     
     it("Devuelve los valores de los ivas desglosados", () => {
         // Arrange
-        const lineasTicket: LineaTicket[] = [
-            {producto: {nombre: "Legumbres", precio: 2, tipoIva: "general",}, cantidad: 2},
-            {producto: {nombre: "Perfume", precio: 20, tipoIva: "general",}, cantidad: 3},
-            {producto: {nombre: "Leche", precio: 1, tipoIva: "superreducidoC",}, cantidad: 6},
-            {producto: {nombre: "Lasaña", precio: 5, tipoIva: "superreducidoA",}, cantidad: 1}
+        const lineasTicket: ResultadoLineaTicket[] = [
+            {nombre: "Legumbres", cantidad: 2, precioSinIva: 2, tipoIva: "general", precioConIva: 2.42},
+            {nombre: "Perfume", cantidad: 3, precioSinIva: 20, tipoIva: "general", precioConIva: 24.2},
+            {nombre: "Leche", cantidad: 6, precioSinIva: 1, tipoIva: "superreducidoC", precioConIva: 1},
+            {nombre: "Lasaña", cantidad: 1, precioSinIva: 5, tipoIva: "superreducidoA", precioConIva: 5.25},
         ]
 
         // Act
         const resultado = devuelveIvasDesglosados(lineasTicket);
         const resultadoEsperado: TotalPorTipoIva[] =  [
-            {tipoIva: "general", cuantia: 0.84 },
+            {tipoIva: "general", cuantia: 13.02},
             {tipoIva: "superreducidoA", cuantia: 0.25 },
             {tipoIva: "superreducidoC", cuantia: 0 },
         ];
