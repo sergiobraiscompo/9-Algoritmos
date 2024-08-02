@@ -59,29 +59,7 @@ describe('devuelvePrecioConIva', () => {
     });
 });
 
-describe('devuelveIvasDesglosados', () => {
-    // it("Debería devolver un error ya que el precio es menor que 0€", () => {
-    //     //arrange
-    //     const lineasTicket: LineaTicket[] = { nombre: "Legumbres", precio: -15, tipoIva: "general"};
-
-    //     // act
-    //     const resultado = () => devuelveIvasDesglosados(lineasTicket);
-
-    //     // assert
-    //     expect(resultado).toThrowError("Se ha producido un error con el producto");
-    // });
-
-    // it("Debería devolver un error ya que el precio es de 0€", () => {
-    //     //arrange
-    //     const producto: Producto = { nombre: "Legumbres", precio: 0, tipoIva: "general"};;
-
-    //     // act
-    //     const resultado = () => devuelvePrecioConIva(producto);
-
-    //     // assert
-    //     expect(resultado).toThrowError("Se ha producido un error con el producto");
-    // });
-    
+describe('devuelveIvasDesglosados', () => {    
     it("Devuelve los valores de los ivas desglosados", () => {
         // Arrange
         const lineasTicket: ResultadoLineaTicket[] = [
