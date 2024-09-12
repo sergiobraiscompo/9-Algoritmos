@@ -41,7 +41,7 @@ describe('devuelvePrecioConIva', () => {
         // assert
         expect(resultado).toThrowError("Se ha producido un error con el producto");
     });
-    
+
     // Arrange
     it.each([
         [{ nombre: "Legumbres", precio: 10, tipoIva: "general"}, 12.10.toFixed(2)],

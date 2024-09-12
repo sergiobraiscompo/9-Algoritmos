@@ -1,12 +1,23 @@
-import { LineaTicket, Producto, ResultadoLineaTicket, TipoIva, TotalPorTipoIva } from "./ticket-constantes";
+import { Producto, ResultadoLineaTicket, ResultadoTotalTicket, TipoIva, TotalPorTipoIva } from "./ticket-constantes";
 
-// BORRAR SI NO ES NECESARIO Create our number formatter.
-const formatter = new Intl.NumberFormat('de-DE', {
-  style: 'currency',
-  currency: 'EUR',
-});
+// Genera lineas ticket completas
+export const creaResultadoLineaTicket = (producto: Producto, cantidad: number, precioConIva: number): ResultadoLineaTicket => {
+
+  if (!producto || !cantidad || cantidad <= 0 ) {
+    throw new Error("Se ha producido un error con el producto"); 
+  }
+
+  return {
+    nombre: producto.nombre,
+    cantidad: cantidad,
+    precioSinIva: producto.precio,
+    tipoIva: producto.tipoIva,
+    precioConIva: precioConIva,
+  };
+}
 
 
+// Devuelve el porcentaje del tipo de iva indicado
 export const calculaPorcentajeIva = (tipoIva: TipoIva): number => {
   if (!tipoIva) {
     throw new Error("Se ha producido un error con el producto"); 
@@ -43,21 +54,9 @@ export const calculaPorcentajeIva = (tipoIva: TipoIva): number => {
   return porcentajeIva;
 }
 
-export const devuelvePrecioConIva = (producto: Producto): string => {
-  const precio = producto.precio;
-  const tipoIva = producto.tipoIva;
 
-  if (!precio || !tipoIva || precio <= 0) { 
-    throw new Error("Se ha producido un error con el producto"); 
-  }
-
-  const valorIva = parseFloat(devuelveValorIva(precio, tipoIva));
-  const total = precio + valorIva;
-
-  return total.toFixed(2);
-}
-
-export const devuelveValorIva = (precio: number, tipoIva: TipoIva): string => {
+// Devuelve el valor del iva del producto indicado
+export const devuelveValorIva = (precio: number, tipoIva: TipoIva): number => {
 
   if (!precio || !tipoIva || precio <= 0) { 
     throw new Error("Se ha producido un error con el producto"); 
@@ -67,10 +66,11 @@ export const devuelveValorIva = (precio: number, tipoIva: TipoIva): string => {
 
   const valorIva = precio * iva;
 
-  return valorIva.toFixed(2);
+  return valorIva;
 }
 
-// Solo usadas para el resultadoFinalTicket
+
+// Usadas para el total del ticket
 export const calcularTotalSinIva = (preciosSinIva: number[]): number => {
   const totalSinIva = preciosSinIva.reduce((acc, precioSinIva) => acc + precioSinIva)
   return totalSinIva;
@@ -80,47 +80,30 @@ export const calcularTotalConIva = (preciosConIva: number[]): number => {
   const totalConIva = preciosConIva.reduce((acc, precioConIva) => acc + precioConIva)
   return totalConIva;
 }
-  
+
 export const calcularTotalIva = (ivasPrecios: number[]): number => {
   const totalIva = ivasPrecios.reduce((acc, totalIva) => acc + totalIva)
   return totalIva;
 }
 
-export const devuelveIvasDesglosados = (resultadoLineasTicketCompletas: ResultadoLineaTicket[]): TotalPorTipoIva[] => {
-  if (!resultadoLineasTicketCompletas) {
-    throw new Error("Ha ocurrido un problema con las líneas recibidas.");
+
+// Devuelve el valor total de cada tipo de iva
+export const devuelveIvasDesglosados = (resultadoLineasTicket: ResultadoLineaTicket[]): TotalPorTipoIva[] => {
+  if (!resultadoLineasTicket) {
+    throw new Error("Se ha producido un error con el producto"); 
   }
 
-  const infoProductos: TotalPorTipoIva[]= [];
 
-  resultadoLineasTicketCompletas.map((resultadoLineaticketCompleta) => {
-    // Elementos necesarios del producto
-    const precio: number = resultadoLineaticketCompleta.precioSinIva;
-    const unidades: number = resultadoLineaticketCompleta.cantidad;
-    const tipoIva: TipoIva = resultadoLineaticketCompleta.tipoIva;
-    const valorIva = parseFloat(devuelveValorIva(precio, tipoIva));
+  const resultado: TipoIva[] = resultadoLineasTicket.reduce(
+    (acumulador: TotalPorTipoIva[], resultadoLineaTicket: ResultadoLineaTicket) => {
+        const precio = devuelveValorIva(resultadoLineaTicket.precioSinIva, resultadoLineaTicket.tipoIva);
+        const cuantia = resultadoLineaTicket.cantidad * precio;
 
-    // Iva total del producto
-    const precioTotal: number = unidades * valorIva;
-
-    console.log("Total Iva producto:", valorIva * unidades)
-    infoProductos.push({ tipoIva: tipoIva, cuantia: Number(formatter.format(precioTotal)) });
+        return precio > 0
+          ? [...acumulador, { tipoIva: resultadoLineaTicket.tipoIva, cuantia: cuantia }]
+          : acumulador;
     },
-  []
+    []
   );
-
-  // Devuelve una lista con el total por tipo de Iva
-  const resultado: TotalPorTipoIva[] = infoProductos.reduce((acc: TipoIva, producto) => {
-    // Elementos necesarios del producto
-    const tipoIva: TipoIva = producto.tipoIva;
-    const precio: number = producto.cuantia;
-
-    return precio > 0
-      ? [...acc, { tipoIva: tipoIva, precio }]
-      : acc;
-    },
-  []
-  );
-
   return resultado;
-  }
+}
