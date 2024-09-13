@@ -94,13 +94,13 @@ export const devuelveIvasDesglosados = (resultadoLineasTicket: ResultadoLineaTic
   }
 
 
-  const resultado: TipoIva[] = resultadoLineasTicket.reduce(
+  const resultado: TotalPorTipoIva[] = resultadoLineasTicket.reduce(
     (acumulador: TotalPorTipoIva[], resultadoLineaTicket: ResultadoLineaTicket) => {
         const precio = devuelveValorIva(resultadoLineaTicket.precioSinIva, resultadoLineaTicket.tipoIva);
         const cuantia = resultadoLineaTicket.cantidad * precio;
 
-        return precio > 0
-          ? [...acumulador, { tipoIva: resultadoLineaTicket.tipoIva, cuantia: cuantia }]
+        return cuantia > 0
+          ? [...acumulador, { tipoIva: resultadoLineaTicket.tipoIva, cuantia: parseFloat(cuantia.toFixed(2)) }]
           : acumulador;
     },
     []

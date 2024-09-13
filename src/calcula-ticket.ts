@@ -37,5 +37,4 @@ export const calculaTicket = (lineasTicket: LineaTicket[]): TicketFinal => {
   }
 }
 
-console.log(productos);
-console.log(calculaTicket(productos));
+console.log("Productos", "\n", calculaTicket(productos).lineas, "\n", "Total", "\n", calculaTicket(productos).total, "\n", "Ivas Desglosados", "\n", calculaTicket(productos).desgloseIva);
