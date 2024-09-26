@@ -10,9 +10,9 @@ export const creaResultadoLineaTicket = (producto: Producto, cantidad: number, p
   return {
     nombre: producto.nombre,
     cantidad: cantidad,
-    precioSinIva: producto.precio,
+    precioSinIva: producto.precio * cantidad,
     tipoIva: producto.tipoIva,
-    precioConIva: precioConIva,
+    precioConIva: precioConIva * cantidad,
   };
 }
 
@@ -63,7 +63,6 @@ export const devuelveValorIva = (precio: number, tipoIva: TipoIva): number => {
   }
 
   const iva = calculaPorcentajeIva(tipoIva);
-
   const valorIva = precio * iva;
 
   return valorIva;
@@ -93,17 +92,16 @@ export const devuelveIvasDesglosados = (resultadoLineasTicket: ResultadoLineaTic
     throw new Error("Se ha producido un error con el producto"); 
   }
 
-
   const resultado: TotalPorTipoIva[] = resultadoLineasTicket.reduce(
     (acumulador: TotalPorTipoIva[], resultadoLineaTicket: ResultadoLineaTicket) => {
-        const precio = devuelveValorIva(resultadoLineaTicket.precioSinIva, resultadoLineaTicket.tipoIva);
-        const cuantia = resultadoLineaTicket.cantidad * precio;
+      const cuantia = devuelveValorIva(resultadoLineaTicket.precioSinIva, resultadoLineaTicket.tipoIva);
 
-        return cuantia > 0
-          ? [...acumulador, { tipoIva: resultadoLineaTicket.tipoIva, cuantia: parseFloat(cuantia.toFixed(2)) }]
-          : acumulador;
+      return cuantia > 0
+        ? [...acumulador, { tipoIva: resultadoLineaTicket.tipoIva, cuantia: parseFloat(cuantia.toFixed(2)) }]
+        : acumulador;
     },
     []
   );
+
   return resultado;
 }
