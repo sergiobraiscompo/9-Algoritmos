@@ -61,10 +61,9 @@ export const devuelveValorIva = (precio: number, tipoIva: TipoIva): number => {
   if (!precio || !tipoIva || precio <= 0) { 
     throw new Error("Se ha producido un error con el producto"); 
   }
-
   const iva = calculaPorcentajeIva(tipoIva);
   const valorIva = precio * iva;
-
+  
   return valorIva;
 }
 
@@ -74,14 +73,16 @@ export const calcularTotalSinIva = (preciosSinIva: number[]): number => {
   const totalSinIva = preciosSinIva.reduce((acc, precioSinIva) => acc + precioSinIva)
   return totalSinIva;
 }
-  
+
 export const calcularTotalConIva = (preciosConIva: number[]): number => {
   const totalConIva = preciosConIva.reduce((acc, precioConIva) => acc + precioConIva)
   return totalConIva;
 }
 
 export const calcularTotalIva = (ivasPrecios: number[]): number => {
+  console.log(ivasPrecios)
   const totalIva = ivasPrecios.reduce((acc, totalIva) => acc + totalIva)
+  console.log(totalIva)
   return totalIva;
 }
 
@@ -91,11 +92,11 @@ export const devuelveIvasDesglosados = (resultadoLineasTicket: ResultadoLineaTic
   if (!resultadoLineasTicket) {
     throw new Error("Se ha producido un error con el producto"); 
   }
-
+  
   const resultado: TotalPorTipoIva[] = resultadoLineasTicket.reduce(
     (acumulador: TotalPorTipoIva[], resultadoLineaTicket: ResultadoLineaTicket) => {
       const cuantia = devuelveValorIva(resultadoLineaTicket.precioSinIva, resultadoLineaTicket.tipoIva);
-
+      
       return cuantia > 0
         ? [...acumulador, { tipoIva: resultadoLineaTicket.tipoIva, cuantia: parseFloat(cuantia.toFixed(2)) }]
         : acumulador;

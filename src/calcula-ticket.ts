@@ -12,12 +12,12 @@ export const calculaTicket = (lineasTicket: LineaTicket[]): TicketFinal => {
   lineasTicket.map((lineaTicket) => {
     // Extrae los precios y los añade a las listas de precios
     const precioSinIva = lineaTicket.producto.precio;
-    const ivaProducto = devuelveValorIva(lineaTicket.producto.precio, lineaTicket.producto.tipoIva);
+    const ivaProducto = lineaTicket.cantidad * (devuelveValorIva(lineaTicket.producto.precio, lineaTicket.producto.tipoIva));
     const precioConIva = precioSinIva + ivaProducto;
 
     preciosSinIva.push(precioSinIva)
     preciosConIva.push(precioConIva)
-    ivasPrecios.push(ivaProducto)
+    ivasPrecios.push(Number(ivaProducto.toFixed(2)))
 
     // Añade la linea completa del producto
     lineas.push(creaResultadoLineaTicket(lineaTicket.producto, lineaTicket.cantidad, precioConIva));
